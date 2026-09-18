@@ -1,6 +1,9 @@
 package za.co.nandipha.cybersecurity.service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PasswordGenerator {
 
@@ -21,11 +24,26 @@ public class PasswordGenerator {
                     "Password length must be at least 8 characters.");
         }
 
-        StringBuilder password = new StringBuilder();
+        List<Character> passwordChars = new ArrayList<>();
 
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(ALL.length());
-            password.append(ALL.charAt(index));
+        // Step 1: guarantee one character from each category
+        passwordChars.add(UPPER.charAt(random.nextInt(UPPER.length())));
+        passwordChars.add(LOWER.charAt(random.nextInt(LOWER.length())));
+        passwordChars.add(NUMBERS.charAt(random.nextInt(NUMBERS.length())));
+        passwordChars.add(SYMBOLS.charAt(random.nextInt(SYMBOLS.length())));
+
+        // Step 2: fill the rest randomly from the full pool
+        for (int i = passwordChars.size(); i < length; i++) {
+            passwordChars.add(ALL.charAt(random.nextInt(ALL.length())));
+        }
+
+        // Step 3: shuffle so the guaranteed characters aren't always first
+        Collections.shuffle(passwordChars, random);
+
+        // Step 4: build the final string
+        StringBuilder password = new StringBuilder();
+        for (char c : passwordChars) {
+            password.append(c);
         }
 
         return password.toString();

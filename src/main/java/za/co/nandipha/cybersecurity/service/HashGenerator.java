@@ -10,6 +10,19 @@ public class HashGenerator {
         return generateHash(text, "SHA-256");
     }
 
+    /**
+     * Generates an MD5 hash of the given text.
+     *
+     * <p><b>Not recommended for security-sensitive use.</b> MD5 is cryptographically
+     * broken — practical collision attacks exist, meaning two different inputs can be
+     * deliberately crafted to produce the same hash. This method is included only for
+     * legacy compatibility or educational comparison against {@link #generateSHA256(String)}.
+     * Use SHA-256 for anything involving integrity checks, password handling, or any
+     * other security-relevant purpose.</p>
+     *
+     * @param text the text to hash
+     * @return the MD5 hash as a lowercase hex string
+     */
     public String generateMD5(String text) {
         return generateHash(text, "MD5");
     }

@@ -4,8 +4,21 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Generates cryptographic hashes of text using SHA-256 or MD5.
+ * SHA-256 is the recommended choice for any security-sensitive use;
+ * MD5 is included only for legacy compatibility or comparison.
+ */
 public class HashGenerator {
 
+    /**
+     * Generates a SHA-256 hash of the given text. SHA-256 is cryptographically
+     * secure and the recommended choice for integrity checks, password handling,
+     * or any other security-relevant purpose.
+     *
+     * @param text the text to hash
+     * @return the SHA-256 hash as a lowercase hex string
+     */
     public String generateSHA256(String text) {
         return generateHash(text, "SHA-256");
     }
@@ -27,6 +40,16 @@ public class HashGenerator {
         return generateHash(text, "MD5");
     }
 
+    /**
+     * Hashes the given text using the specified algorithm and returns the result
+     * as a lowercase hex string. Shared by {@link #generateSHA256(String)} and
+     * {@link #generateMD5(String)} to avoid duplicating the hashing logic.
+     *
+     * @param text the text to hash
+     * @param algorithm the name of the hashing algorithm to use (e.g. "SHA-256", "MD5")
+     * @return the resulting hash as a lowercase hex string
+     * @throws RuntimeException if the specified algorithm is not available on this platform
+     */
     private String generateHash(String text, String algorithm) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);

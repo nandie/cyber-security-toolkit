@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Generates strong, random passwords using a cryptographically secure random
+ * source. Every generated password is guaranteed to contain at least one
+ * character from each of four categories — uppercase, lowercase, number, and
+ * symbol — closing a gap where purely independent random selection could,
+ * rarely, produce a password missing an entire character category.
+ */
 public class PasswordGenerator {
 
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -17,6 +24,17 @@ public class PasswordGenerator {
 
     private final SecureRandom random = new SecureRandom();
 
+    /**
+     * Generates a random password of the given length, guaranteed to contain
+     * at least one uppercase letter, one lowercase letter, one number, and one
+     * symbol. One character from each category is selected first, the remaining
+     * length is filled randomly from the full character pool, and the result is
+     * shuffled so the guaranteed characters aren't predictably placed.
+     *
+     * @param length the desired password length; must be at least 8
+     * @return a randomly generated password of the requested length
+     * @throws IllegalArgumentException if length is less than 8
+     */
     public String generatePassword(int length) {
 
         if (length < 8) {

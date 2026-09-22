@@ -2,6 +2,10 @@ package za.co.nandipha.cybersecurity.service;
 
 import java.util.Set;
 
+/**
+ * Scores password strength based on length, character variety, and whether
+ * the password appears on a denylist of commonly breached weak passwords.
+ */
 public class PasswordAnalyzer {
 
     private static final Set<String> COMMON_WEAK_PASSWORDS = Set.of(
@@ -11,6 +15,19 @@ public class PasswordAnalyzer {
             "abc123", "111111", "123123", "sunshine", "master"
     );
 
+    /**
+     * Scores a password's strength on a scale of 0 to 5.
+     *
+     * <p>Passwords matching a known common/weak password (checked case-insensitively)
+     * are capped at a score of 1, regardless of character variety — a password like
+     * "Password1!" may look varied, but its presence on breach lists makes it
+     * fundamentally weak. Otherwise, one point is awarded for each of: length of at
+     * least 8 characters, an uppercase letter, a lowercase letter, a digit, and a
+     * symbol from {@code !@#$%^&*()}.</p>
+     *
+     * @param password the password to analyze; null or shorter than 4 characters scores 0
+     * @return a strength score from 0 (weakest) to 5 (strongest)
+     */
     public int checkStrength(String password) {
 
         if (password == null || password.length() < 4) {
